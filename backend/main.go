@@ -36,7 +36,7 @@ func healthCheckHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	r := mux.NewRouter()
 
-	api := r.PathPrefix("/api").Subrouter()
+	api := r.PathPrefix("/api-quiz").Subrouter()
 	api.HandleFunc("/health", healthCheckHandler).Methods("GET")
 
 	handler := corsMiddleware(r)
