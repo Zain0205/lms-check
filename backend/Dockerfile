@@ -3,6 +3,8 @@ FROM golang:1.25-alpine AS development
 WORKDIR /app
 
 # Install air for hot reload
+ENV PATH="/go/bin:${PATH}"
+
 RUN go install github.com/cosmtrek/air@latest
 
 # Copy go mod files
@@ -27,15 +29,14 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o /codelab-server .
+RUN CGO_ENABLED=0 GOOS=linux go build -o /lms-ziad-quiz-server .
 
 FROM alpine:latest AS production
 
 WORKDIR /root/
 RUN apk --no-cache add ca-certificates wget
 
-COPY --from=builder /codelab-server .
-COPY --from=builder /app/data ./data
+COPY --from=builder /lms-ziad-quiz-server .
 
 EXPOSE 8080
-CMD ["./codelab-server"]
+CMD ["./lms-ziad-quiz-server"]
